@@ -1,0 +1,24 @@
+There is a problem that routinely bedevils new Python users who come from a
+Windows or DOS background. The problem is that on Windows, a backslash is a
+separator in filenames, whereas on Unix (where Python originated) the backslash
+has an entirely different function (as an escape character) and the //forward//
+slash is the filename separator character.
+ 
+When a person from a Windows background starts having problems with filenames,
+and goes looking for a solution, the first thing that he (or she) usually finds
+is Python's "raw" strings. However, from the perspective of a Windows user, raw
+strings aren't truly raw  they are only semi-raw, as you will rudely discover
+the first time that you use a raw string to specify a filename (or filename
+part) that ends with a single backslash.
+ 
+A better strategy is to routinely code your filenames using forward slashes,
+and then use a Python function such as {{{os.path.normcase}}} to change the
+separator to whatever is appropriate to the local operating system. A nice
+bonus of ths strategy is that it is platform independent
+ 
+{{{
+import os.path
+myFilename = "c:/mydir/myfile.txt"
+myFilename = os.path.normcase(myFilename)
+}}}
+

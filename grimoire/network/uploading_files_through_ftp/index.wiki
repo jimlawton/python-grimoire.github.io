@@ -1,0 +1,47 @@
+This is the opposite of the previous problem. You now want to upload a file to
+an FTP server. 
+ 
+The {{{ftplib}}} module comes to the rescue, again. 
+ 
+{{{
+import ftplib
+
+# Open the connection
+ftp = ftplib.FTP("ftp.fbi.example.gov")
+ftp.login("mulder", "trustno1")
+
+# Change directory
+ftp.cwd('pub/x-files/bigfoot')
+
+# Read from a local text file, and send it to the FTP server
+# The local filename is 'sightings', but it'll be stored on the remote FTP
+# server under the name 'sightings-1999-01'.
+f = open("sightings", "r")
+ftp.storlines("STOR sightings-1999-01", f)
+f.close()
+
+# Upload a binary file.
+# Local filename: 'footprint.jpg', remote filename: 'footprint-1.jpg'
+f = open("footprint.jpg", "rb")
+ftp.storbinary("STOR footprint-1.jpg", f, 1024)
+f.close()
+
+# Close connection
+ftp.quit()
+}}}
+ 
+When uploading a binary file, as opposed to a text file, a third numeric
+argument has to be provided to the {{{storbinary()}}} method. 
+ 
+{{{
+ftp.storbinary("STOR footprint-1.jpg", f, 1024)
+}}}
+ 
+The file will be read and sent over the network in chunks of the specified
+block size, so it shouldn't be set to a very small value like 1; this would
+result in too much overhead. It would be possible to spend a good deal of
+effort trying different values of the block size and measure the performance in
+order to figure out the optimal block size, but it's not that critical a
+parameter. 1024 is a reasonable number, so you can simply set the value and
+forget about it. 
+ 

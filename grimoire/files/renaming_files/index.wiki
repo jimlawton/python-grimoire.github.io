@@ -1,0 +1,13 @@
+! Problem:
+
+You want to rename a file on the filesystem, and have already figured out how
+to deal with your operating system's naming conventions inside Python.
+
+! Solution:
+
+Simple: use {{{os.rename}}}:
+
+{{{
+#Rename file with filename f1 to filename f2
+os.rename(f1,f2)
+}}}

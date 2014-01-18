@@ -1,0 +1,15 @@
+The [[Conversion Script]] is a very simple demo of how to parse clean,
+structured [[HTML]] using the standard <<PythonModule HTMLParser>> object. The
+<<PythonModule HTMLParser>> is actually a lot more flexible than it seems, and
+can be used for simple [[XML]] parsing as well.
+
+However, if you have to deal with mis-formatted [[HTML]] or don't want to get
+into the complexity of Python [[XML]] bindings, a nice alternative might be
+[[BeautifulSoup|http://www.crummy.com/software/BeautifulSoup/]], which despite
+requiring some tinkering with (and probably more documentation and samples),
+can handle pretty much anything on the Web.
+
+But any mention of [[XML]] parsing wouldn't be complete without mentioning
+[[RSS]] or [[Atom]] feeds, which are best handled with [[Mark Pilgrim]]'s
+[[Universal Feed Parser|http://feedparser.org/]]. currently the basis for many
+Python-based news aggregators.

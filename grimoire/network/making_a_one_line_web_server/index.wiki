@@ -1,0 +1,19 @@
+A useful trick you can pull off with Python is to set up a small web server at
+a moment's notice (mostly as a one-off file share for those occasions when you
+simply can't get files across any other way).
+
+To do that, create a short shell script containing:
+
+{{{
+#!/bin/sh
+python -c '__import__("SimpleHTTPServer").test()'
+}}}
+
+(or just alias the {{{python}}} invocation in your shell)
+
+{{{SimpleHTTPServer}}} defaults to port 8000 and serving files from wherever
+you invoke it. It is not spectacularly smart, but should to a good enough job
+of serving simple demos and the odd file.
+
+Be sure to use "Save Link As..." when downloading Office files from it, since
+it does not have all the [[MIME]] types defined.

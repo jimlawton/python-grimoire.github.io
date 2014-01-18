@@ -1,0 +1,21 @@
+! Problem:
+
+You have two dictionaries {{{d1}}} and {{{d2}}}. You wish to add the key/value
+pairs from {{{d2}}} to {{{d1}}}. 
+
+! Solution:
+ 
+The {{{update}}} method of a dictionary adds the contents of another
+dictionary. To solve this problem, you can simply do: {{{d1.update(d2)}}}. 
+ 
+{{{d1.update(d2)}}} is equivalent to the following code: 
+ 
+{{{
+for key, value in d2.items():
+   d1[ key ] = value
+}}}
+ 
+If the same key is associated with a value in both {{{d1}}} and {{{d2}}},
+{{{update()}}} will replace the value in {{{d1}}} with the value from {{{d2}}}.
+{{{d2}}} is never modified by this method.
+ 

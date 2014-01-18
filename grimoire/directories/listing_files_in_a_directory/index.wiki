@@ -1,0 +1,43 @@
+! Problem:
+
+You want to make a list of the files in a directory, in order to do something
+for every file. 
+
+! Solution
+
+The {{{os.listdir(path)}}} function returns a list of strings containing all
+the contents of the directory specified by {{{path}}}, in no particular order.
+Note that the list will also include directory names in the resulting list. 
+
+{{{
+>>> os.listdir('/usr')
+['X11R6', 'bin', 'dict', 'doc', 'etc', 'games', ... ]
+}}}
+ 
+If you want to list all the files matching a wildcard specification such as
+{{{*.py}}}, you can implement it by checking each filename in the list returned
+by {{{os.listdir()}}}. The {{{glob()}}} function in the <<PythonModule glob>>
+module can do this for you: 
+ 
+{{{
+>>> import glob
+>>> glob.glob('/usr/lib/python1.5/B*.py')
+['/usr/lib/python1.5/BaseHTTPServer.py', '/usr/lib/python1.5/Bastion.py']
+}}}
+ 
+{{{glob.glob()}}} will also list directories that match the wildcard
+specification. 
+ 
+Once you've gotten a list of filenames, you'll often want to limit it to those
+names that correspond to files and not directories. The {{{os.path}}} module
+contains functions called {{{isfile(path)}}}, {{{isdir(path)}}}, and
+{{{islink(path)}}} which return true if the path corresponds to a file,
+directory, or symbolic link. 
+ 
+These functions can be combined with the built-in {{{filter()}}} to easily
+select those paths that are actually files: 
+ 
+{{{
+filelist = os.listdir('.')
+filelist = filter(os.path.isfile, filelist)
+}}}

@@ -1,0 +1,87 @@
+After creating a dictionary, you want to loop over the dictionary's contents
+and do something for each entry, such as printing them. 
+ 
+The {{{keys()}}} method of dictionaries returns a list of the dictionary's
+keys, arranged in essentially random order: 
+ 
+{{{
+>>> for colr in fr_colours.keys(): print colr
+...
+yellow
+red
+black
+white
+blue
+}}}
+ 
+If you want to loop over the contents in some sorted order, you'll have to
+retrieve the list of keys and sort it before looping through it. 
+ 
+{{{
+>>> keylist = fr_colours.keys() ; keylist.sort()
+>>> for colr in keylist: print colr
+...
+black
+blue
+red
+white
+yellow
+}}}
+ 
+Remember that the {{{sort()}}} list method sorts a list in-place and returns
+{{{None}}}. {{{for colr in fr_colours.keys().sort()}}}will not work, because
+the value of {{{fr_colours.keys().sort()}}} is {{{None}}}. 
+ 
+''Discussion:'' 
+ 
+The list returned by {{{keys()}}} is arranged randomly, because the key/value
+pairs are scattered across random bins in a hash table. Dictionaries therefore
+don't impose any ordering on their contents. For example, if you assemble a
+dictionary element-by-element, and print the dictionary after each new
+key/value pair is added, there's no order to how the contents are displayed. 
+ 
+{{{
+>>> d = {} ; d['red'] = 'rouge' ; print d
+{'red': 'rouge'}
+>>> d['blue'] = 'bleu' ; print d
+{'red': 'rouge', 'blue': 'bleu'}
+>>> d['yellow'] = 'jaune' ; print d
+{'yellow': 'jaune', 'red': 'rouge', 'blue': 'bleu'}
+>>> d['green'] = 'vert' ; print d
+{'yellow': 'jaune', 'red': 'rouge', 'green': 'vert', 'blue': 'bleu'}
+}}}
+ 
+There are two other methods available for retrieving the contents of a
+dictionary. If your loop will require each key and its corresponding value, you
+can use the {{{items()}}} method, which returns a list of {{{(key, value)}}}
+2-tuples. Again, the list contents are arranged in a random order. 
+ 
+{{{
+>>> for english, french in fr_colours.items():
+...     print english, '\t', french
+...
+yellow  jaune
+red     rouge
+black   noir
+white   blanc
+blue    bleu
+}}}
+ 
+Least commonly used of all, the {{{values()}}} method returns a list containing
+only the values from a dictionary. 
+ 
+{{{
+>>> for colr in fr_colours.values(): print colr
+...
+jaune
+rouge
+noir
+blanc
+bleu
+}}}
+ 
+The way to keep these method names straight is to remember that dictionaries
+map from keys to values; the {{{keys()}}} and {{{values()}}} methods return a
+list of the corresponding elements of the dictionary. That leaves {{{items()}}}
+to return a list of 2-tuples. 
+ 

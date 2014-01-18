@@ -1,0 +1,78 @@
+You want to read through a file line by line. This is the most common way of
+processing text files. For example, if you're writing a Python program that
+searches for text in a file, you'll have to loop through the file contents on a
+line by line basis.
+ 
+You can code the loop explicitly, like this: 
+ 
+{{{
+file = open('/tmp/filename', 'r')
+while True:
+   line = file.readline()
+   if line == "": break    # Check for end-of-file
+   do_something(line)
+file.close()
+}}}
+ 
+Or like this, which reads all of the lines of the file into a list: 
+ 
+{{{
+file = open('/tmp/filename', 'r')
+lines = file.readlines()
+file.close()
+for line in lines:
+   do_something(line)
+}}}
+ 
+The {{{fileinput}}} module makes this even simpler by handling the loop for
+you: 
+ 
+{{{
+import fileinput
+for line in fileinput.input("/tmp/filename"):
+   do_something(line)
+}}}
+ 
+For sheer simplicity, it's hard to top reading all the lines from the file into
+a list, like this: 
+ 
+{{{
+file = open('/tmp/filename', 'r')
+lines = file.readlines()
+file.close()
+for line in lines:
+   do_something(line)
+}}}
+ 
+Or like this: 
+ 
+{{{
+file = open('/tmp/filename', 'r')
+for line in file.readlines()
+   do_something(line)
+}}}
+ 
+This is easy to code, but it does require reading the entire file into memory.
+These days, most systems will have enough memory to effortlessly handle files a
+few hundreds of kilobytes long. A 10 megabyte file will cause problems -
+swapping to disk, if not an actual crash - for many systems. Use your common
+sense; if you're pretty sure you won't need to handle large files, use
+{{{file.readlines()}}}; otherwise, use either of the two suggested solutions. 
+ 
+To loop over multiple files using fileinput, use a sequence of filenames (a
+list, tuple, etc) instead of just a single file.
+ 
+{{{
+for filename in ("file1", "file2", "file3"):
+
+   file  = open(filename, 'r')
+   lines = file.readlines()
+   file.close()
+
+   for line in lines:
+       do_something(line)
+}}}
+ 
+ If you omit the names, they default to {{{sys.argv[1:]}}}, or to standard
+input if no arguments were given. 
+ 

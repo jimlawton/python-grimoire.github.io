@@ -1,0 +1,98 @@
+! Problem:
+
+You wish to pass a function as an argument to another function. 
+
+! Solution:
+ 
+Python is flexible enough to treat functions and methods in the same way as
+ordinary variables. 
+ 
+{{{
+F = f.write
+F(s)
+}}}
+ 
+is the same thing as: 
+ 
+{{{
+f.write(s)
+}}}
+ 
+As a computer scientist would describe it, functions are first-class objects in
+Python. So, you can simply pass a function as one of the arguments: 
+ 
+{{{
+def repeat_func(func, N, data):
+   "Repeat a function N times"
+   for i in range(N):
+       data = func(data)
+   return data
+
+repeat_func(differentiate, 3, data)
+}}}
+ 
+It's also possible to store functions in Python data structures, such as
+variables, lists, tuples, and class instances. For example, the following
+function takes a list of functions, and calls them all, from left to right. 
+ 
+{{{
+def compose(func_list, data):
+   for F in func_list:
+       data = F(data)
+   return data
+}}}
+
+! Discussion:
+
+A common application of this is to keep a dictionary of handler functions,
+retrieving the function to call. The following toy example has a dictionary
+mapping command names to the functions that should be called: 
+ 
+{{{
+def output_status():
+   ...
+
+def set_bf_mode():
+   ...
+
+... other function definitions ...
+
+cmd_dict = {'status': output_status, 'brightfield', set_bf_mode,
+    'darkfield': set_df_mode, 'icr': set_icr_mode}
+
+def call_command(cmd_name):
+   function = cmd_dict[cmd_name]
+   function()
+}}}
+ 
+It's not necessary to actually have a {{{def}}} statement in order to create a
+function. The {{{lambda}}} keyword is used to create small unnamed functions.
+The function is limited to a single expression, but that's enough to be useful
+in many cases. A common use for {{{lambda}}} is in concert with built-in
+functions like {{{map()}}}, which loops over the elements of a list, performs a
+function on each list element, and returns a list containing the results. 
+ 
+{{{
+>>> map(string.upper,
+...     ["Here's", "a", "list", "of", "words"] )
+["HERE'S", 'A', 'LIST', 'OF', 'WORDS']
+}}}
+ 
+{{{lambda}}} would be used if there's no built-in function corresponding to
+what you need. For example, the following code would take the first character
+of every word in the list: 
+ 
+{{{
+>>> map(lambda word: word[0],
+...     ["Here's", "a", "list", "of", "words"] )
+['H', 'a', 'l', 'o', 'w']
+}}}
+
+Here's another example. In this case, a default argument is used to bind the
+{{{f.write()}}} method to the local variable {{{wr}}}, and added a newline
+before calling the write method. 
+
+{{{
+ftp.retrlines("RETR sightings.txt",
+             lambda s, wr = f.write: wr( s+"\n" ) )
+}}}

@@ -1,0 +1,63 @@
+If a default value is some expression, that expression is evaluated at the time
+the {{{def}}} statement is executed, not when the function is called. Consider
+the following example: 
+ 
+{{{
+default_level = 9
+def new_compressor(compresslevel = default_level):
+   print 'Compression level:', compresslevel
+
+new_compressor()   # Prints the default value
+default_level = 2  # Will this change the default value?
+new_compressor()
+}}}
+ 
+When this code is run, it will print: 
+ 
+{{{
+Compression level: 9
+Compression level: 9
+}}}
+ 
+Remember, {{{def}}} is an executable statement, binding the function's name
+"{{{new_compressor}}}" to a function object. At that time, {{{default_level}}}
+has a value of 9, so that's used as the default value of compresslevel.
+Subsequently changing the value of {{{default_level}}} has no effect on the
+default value of the function. It's not possible to change the object that's
+been defined as the default value. However, if an object is mutable and can be
+modified in place, as a list or dictionary can be, then any modification made
+to that object will change the default. Another example will make this clearer,
+I hope: 
+ 
+{{{
+def modify_list(List = []):
+   print 'Before:', id(List), List
+   List.append( 1 )
+   print 'After: ', id(List), List
+}}}
+ 
+Calling this function with {{{modify_list()}}} will output: 
+ 
+{{{
+Before: 135048144 []
+After:  135048144 [1]
+}}}
+ 
+The first number, the value of {{{id(List)}}}, is an integer guaranteed to be
+unique for this object while the object exists, and is usually derived from the
+machine address at which the object resides. The value printed here will vary
+from run to run of the Python interpreter, but will remain the same in each
+execution. On the first call of {{{modify_list()}}}, the list object assigned
+as the default value is changed. A second, identical call will produce: 
+ 
+{{{
+Before: 135048144 [1]
+After:  135048144 [1, 1]
+}}}
+ 
+{{{id(List)}}} is the same on both function calls, so the same list object is
+assigned as the default value, but the contents of that object have been
+changed, which doesn't affect the value returned by {{{id(List)}}}. New users
+are often surprised by this behaviour, and wonder if it's a bug in Python; it's
+not, and follows consistently from Python treating everything as a reference. 
+ 

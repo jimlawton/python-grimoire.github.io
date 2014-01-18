@@ -1,0 +1,92 @@
+You want to retrieve a file from an FTP site by using a Python program. 
+ 
+Use the {{{ftplib}}} module. 
+ 
+{{{
+import ftplib
+
+# Open the connection
+ftp = ftplib.FTP("ftp.fbi.example.gov")
+ftp.login("mulder", "trustno1")
+
+# Change directory
+ftp.cwd('pub/x-files')
+
+# Write the output to a local file.
+# It's a binary file, so be sure to open the file in
+# binary mode.
+f = open("trixie.jpg", "wb")
+ftp.retrbinary("RETR trixie.jpg", f.write)
+f.close()
+
+# Close connection
+ftp.quit()
+}}}
+ 
+The {{{ftplib}}} module provides an {{{FTP}}} class that represents a
+connection to an FTP server. To open the connection, you must provide a
+username and password. 
+ 
+Retrieving the file isn't completely straightforward, because the {{{FTP}}}
+class provides a highly flexible interface. There's no method which will
+retrieve a file named "{{{X}}}" and write it to a local file named "{{{X}}}";
+instead, you have to handle such details yourself. When a file is retrieved via
+FTP using the {{{retr}}} and {{{retrbinary}}} methods, you have to provide two
+pieces of information: the filename, and a Python function. The Python function
+will be called for each chunk of the file's contents, receiving a a string
+containing the data; the function then has the job of writing the data to a
+file. Luckily, you can often find a built-in function or method that does what
+you need, as in the example: 
+ 
+{{{
+file = open("trixie.jpg", "wb")
+ftp.retrbinary("RETR trixie.jpg", file.write)
+file.close()
+}}}
+ 
+{{{file}}} is a file object, whose {{{write(S)}}} method writes the string S to
+the file. In Python, you can use bound methods as callbacks; a bound method
+remembers the object that it belonged to. {{{file.write}}} is a bound method in
+this example. You can provide a custom function that does additional work
+beyond just writing out the data. 
+ 
+When retrieving a file in text mode, each line is returned without any trailing
+newline characters, so you can add the required line endings for your platform
+when writing each line out to a file. 
+ 
+{{{
+f = open("sightings.txt", "w")
+ftp.retrlines("RETR sightings.txt",
+             lambda s, w = f.write: w(s+"\n") )
+f.close()
+}}}
+ 
+The following function prints a progress counter as the file is retrieved, by
+maintaining a count of the bytes read so far. On every call, the current byte
+count is padded out to 9 characters, printed, and followed by 9 backspace
+characters. 
+ 
+{{{
+import sys
+
+byte_count = 0
+output_file = open('...', 'w')
+
+def write_block(data):
+   global byte_count
+   byte_count = byte_count + len(data)
+
+   output_file.write( data )
+
+   # Output the current byte count and backspaces
+   sys.stdout.write('%9i%s' % (byte_count, 9*'\010') )
+sys.stdout.flush()
+}}}
+ 
+{{{sys.stdout}}} has to be flushed after each {{{write()}}} call, in order to
+ensure that the output is actually sent to the screen as it's generated. 
+ 
+See also the section on "Passing Functions as Parameters". It discusses how to
+pass a function as a parameter to another function, and will help you to
+understand callbacks. 
+

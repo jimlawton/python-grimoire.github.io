@@ -1,0 +1,38 @@
+! Problem:
+
+You have a list, and wish to ensure that each item in the list is unique, only
+occurring once. For example, if your list is {{{[1,4,5,2,4]}}}, you would want
+to remove one of the 4's. 
+
+! Solution:
+ 
+If you can reorder the list, sort it to put duplicate values next to each
+other. If the list is sorted, then removing duplicates requires just a single
+loop. Note that the opening test for the length of the list is required -
+without it, if the list is empty, this code will raise an exception.
+ 
+{{{
+if len(List) > 1:
+   List.sort()         # Sort the list
+
+   # Walk from the end of the list to the beginning;
+   # if two elements are identical, delete one of them.
+   last = List[-1]     # Start with the last element
+
+   for i in range(len(List)-2, -1, -1):
+       if last==List[i]:
+           del List[i]
+       else:
+           last=List[i]
+}}}
+ 
+If all the elements of the list can be used as dictionary keys, you can create
+a dictionary with the list elements as keys, and take the result of the
+dictionary's {{{keys()}}} method as the new list. 
+ 
+{{{
+d = {}
+for x in List: d[x] = x
+List = d.keys()
+}}}
+ 

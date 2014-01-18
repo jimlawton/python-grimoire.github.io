@@ -1,0 +1,36 @@
+You have a tuple, and want to turn it into a list. Or, the opposite problem: a
+list that you want to turn into a tuple. 
+ 
+The built-in functions {{{tuple()}}} and {{{list()}}} convert any sequence type
+into a tuple or list containing the same items in the same order. 
+ 
+{{{
+>>> tuple( [1,2,3] )
+(1, 2, 3)
+>>> list ( ('monty', "python's", "fliegende", "circus") )
+['monty', "python's", 'fliegende', 'circus']
+>>> tuple('Dr Gumby!')
+('D', 'r', ' ', 'G', 'u', 'm', 'b', 'y', '!')
+}}}
+ 
+''Discussion:'' 
+ 
+{{{list()}}} was introduced in Python 1.5; in previous versions, the following
+idiom was used to convert things to lists: 
+ 
+{{{
+list = map(None, (1,2,3,4) )
+}}}
+ 
+Here's how the above line of code works: the {{{map()}}} built-in function is
+used to evaluate a function for every value in a sequence type like a tuple,
+and returns a list containing the function's output for each value in the input
+sequence. Put another way, {{{map(F, seq)}}} returns a new list containing
+{{{[F( seq[0] ), F( seq[1] ), ... ]}}}. If {{{None}}} is passed as the function
+{{{F}}}, then {{{map()}}} simply returns the elements of the sequence
+{{{[seq[0], seq[1], ...]}}}. 
+ 
+You may still see the above use of {{{map()}}} in programs that attempt to be
+compatible with older versions of Python; if you don't care about backward
+compatibility, simply use {{{list()}}} which is clearer. 
+ 

@@ -1,0 +1,14 @@
+! Problem:
+
+You want to parse an URL into its component parts
+
+! Solution:
+
+Look at the <<PythonModule urlparse>> module, which does it all for you down to
+every last component part:
+
+{{{
+import urlparse
+
+(schema,netloc,path,parameters,query,fragment) = urlparse.urlparse(url)
+}}}

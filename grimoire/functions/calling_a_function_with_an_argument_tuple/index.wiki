@@ -1,0 +1,41 @@
+! Problem:
+
+You have a function in a variable {{{F}}}, and a tuple {{{T}}} containing its
+arguments. You wish to call {{{F}}} with the arguments {{{T}}}.
+
+! Solution:
+ 
+Use the built-in function {{{apply()}}}: 
+ 
+{{{
+result = apply(F, T)
+}}}
+ 
+Functions that don't require any arguments can be called using an empty tuple.
+For example, {{{time.time()}}} doesn't take any arguments, so it can be called
+like this: 
+ 
+{{{
+curtime = apply( time.time, () )
+}}}
+ 
+If the function takes keyword arguments, you can also pass in a dictionary
+whose keys and values are the keyword arguments and their values. 
+ 
+{{{
+# Equivalent to
+#  menu.add_command(label = 'Open Help', command = window.show_help)
+kw = {'label': 'Open Help',
+     'command': window.show_help }
+
+apply(menu.add_command, (), kw)
+}}}
+ 
+''Discussion:'' 
+ 
+One subtle point is that {{{apply(F, T)}}} is not the same as {{{F(T)}}}.
+{{{F(T)}}} calls {{{F}}} with exactly one argument, the tuple {{{T}}}, while
+{{{apply(F, T)}}} calls {{{F}}} with {{{T[0]}}} as the first argument,
+{{{T[1]}}} as the second, and so forth. An empty tuple corresponds to calling
+the function with no arguments. 
+ 

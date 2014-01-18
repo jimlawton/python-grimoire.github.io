@@ -1,0 +1,27 @@
+Suppose you have the following dictionary:
+
+{{{
+d = {'a':1, 'b':2, 'c':3}
+}}}
+
+And you want to filter it so that you can only see the keys in:
+
+{{{
+f = ['a','b']
+}}}
+
+The easiest way to go about that is to build a set of tuples inside a list
+comprehension and turn the result into a dictionary like so:
+
+{{{
+filtered = dict([(k,v) for k,v in d.items() if k in f])
+}}}
+
+For instance, it may be handy to grab some local variables (from
+{{{locals()}}}) and put them into a {{{dict}}}:
+
+{{{
+somelocals = dict([(k,v) for k,v in locals().items() if k in
+['author','date','title']])
+}}}
+

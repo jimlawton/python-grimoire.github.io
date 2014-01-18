@@ -1,0 +1,69 @@
+! Problem:
+
+You have a sequence, and you wish to loop over its contents. 
+
+! Solution:
+ 
+This is the purpose of the {{{for}}} statement: 
+ 
+{{{
+for item in [1,2,3,4,5]:
+      print item
+}}}
+ 
+This will work for tuples and strings, too. 
+ 
+! Discussion:
+ 
+To iterate over a list in reverse order, the traditional solution before Python
+2.4 was to simply reverse the list:
+ 
+{{{
+List.reverse()
+for item in list:
+   # ... do something with item ...
+}}}
+
+However, this modifies the list itself, so as of Python 2.4, a built-in
+{{{reverse}}} iterator is also available:
+
+{{{
+for item in reverse(List):
+    # do something with your item
+}}}
+
+This allows reverse iteration over any sequence without modifying the
+underlying sequence, and therefore allows easy iteration over immutable
+sequences such as strings or tuples:
+
+{{{
+s = "abcd"
+s.reverse()
+Traceback (most recent call last):
+  File "<stdin>", line 1, in ?
+AttributeError: 'str' object has no attribute 'reverse'
+>>> for i in reversed(s):
+...     print i
+...
+d
+c
+b
+a
+}}}
+
+An equivalent function, {{{sorted}}}, exists for sorting sequences.
+
+<<<
+''Note:'' This will probably require a modern Python example of its own.
+<<<
+
+Here's another way to iterate backwards when you have some other sequence type
+like a tuple or a string, or if reversing the list is unacceptable to you.
+You'll have to loop over the indices, from the length of the sequence minus
+one, down to zero. 
+ 
+{{{
+for i in range(len(seq)-1, -1, -1):
+   item = seq[i]
+   # ... do something with item ...
+}}}

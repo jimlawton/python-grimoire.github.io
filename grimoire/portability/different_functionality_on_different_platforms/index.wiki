@@ -1,0 +1,29 @@
+Remember that Python is extremely dynamic and that you can use this dynamism to
+configure a program at run-time to use available functionality on different
+platforms. For example you can test the sys.platform and import different
+modules based on its value. 
+ 
+{{{
+import sys
+if sys.platform == "win32":
+   import win32pipe
+   popen = win32pipe.popen
+else:
+   import os
+   popen = os.popen
+}}}
+ 
+Also, you can try to import a module and use a fallback if the import fails: 
+ 
+{{{
+try:
+   import really_fast_implementation
+   choice = really_fast_implementation
+except ImportError:
+   import slower_implementation
+   choice = slower_implementation
+}}}
+ 
+This is commonly used to write code which will use a faster C extension module
+if it's installed, but will still work without the extension. 
+

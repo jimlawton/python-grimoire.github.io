@@ -1,0 +1,16 @@
+If you need to automatically save and restore objects and other data structures
+to files, the {{{pickle}}} library module solves this in a very general way
+(though you still can't store things like open files, sockets or windows), and
+the library module {{{shelve}}} uses {{{pickle}}} and {{{(g)dbm}}} to create
+persistent mappings containing arbitrary Python objects. For possibly better
+performance, use the {{{cPickle}}} module. 
+ 
+A more awkward way of doing things is to use {{{pickle}}}'s little sister,
+{{{marshal}}}. The {{{marshal}}} module provides very fast ways to store
+noncircular basic Python types to files and strings, and back again. Although
+{{{marshal}}} does not do fancy things like store instances or handle shared
+references properly, it does run extremely fast. For example loading a half
+megabyte of data may take less than a third of a second (on some machines).
+This often beats doing something more complex and general such as using
+{{{gdbm}}} with {{{pickle}}}/{{{shelve}}}. 
+ 

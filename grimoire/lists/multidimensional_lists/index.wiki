@@ -1,0 +1,55 @@
+! Problem:
+
+You wish to create a list of lists.
+
+! Solution:
+ 
+This obvious solution for creating a list of {{{N}}} lists is wrong; see the
+Discussion for an explanation. 
+ 
+{{{
+LL = [ [] ] * N
+}}}
+ 
+Instead, build an {{{N}}}-element list first, and then replace each element
+with a list. 
+ 
+{{{
+LL = [None] * N
+for i in range(N): LL[i] = []
+}}}
+
+If you want to fill out the contained lists with default values, simply replace
+{{{[]}}} with an expression like {{{N*[0]}}}. Elements could then be retrieved
+by accessing {{{LL[i][j]}}}. 
+
+! Discussion:
+ 
+Why doesn't {{{[ [] ] * N}}} work as expected? When multiplying a list, Python
+copies the contents of the list //by reference//.
+
+This means that you'll wind up with a list containing {{{N}}} references to the
+same objects, which is fine for immutable objects such as floating point
+numbers or tuples, but can be confusing with mutable objects such as lists. To
+make this clearer, consider the list constructed for {{{N=5}}}. 
+
+What happens when you append an element to the first list? 
+ 
+{{{
+>>> LL = [ [] ] * N
+>>> print LL
+[[], [], [], [], []]
+>>> LL[0].append(1)
+>>> LL
+[[1], [1], [1], [1], [1]]
+}}}
+ 
+All of the lists are modified, not just the first one! The {{{is}}} operator
+will tell you that all the elements of {{{LL}}} are actually the same list; a
+true value is returned by {{{LL[0] is LL[1]}}}. 
+ 
+A common use of multi-dimensional lists is to store matrices. Before
+reinventing the wheel and writing yet another matrix type, take a careful look
+at [[Numeric Python|http://www.python.org/topics/scicomp]], which includes a
+matrix type, interfaces to libraries of functions such as LINPACK, and lots of
+other modules useful for numeric work.

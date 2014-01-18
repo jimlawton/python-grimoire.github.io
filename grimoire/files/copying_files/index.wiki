@@ -1,0 +1,26 @@
+Most of the time this will do: 
+ 
+{{{
+infile = open("file.in", "rb")
+outfile = open("file.out", "wb")
+outfile.write(infile.read())
+}}}
+ 
+However for huge files you may want to do the reads/writes in pieces (or you
+may have to), and if you dig deeper you may find other technical problems. 
+ 
+Unfortunately, there's no totally platform independent answer. On Unix, you can
+use {{{os.system()}}} to invoke the "cp" command (see your Unix manual for how
+it's invoked). On DOS or Windows, use {{{os.system()}}} to invoke the "COPY"
+command. On the Mac, use {{{macostools.copy(srcpath, dstpath)}}}. It will also
+copy the resource fork and Finder info. 
+ 
+There's also the shutil module which contains a {{{copyfile()}}} function that
+implements the copy loop; but in Python 1.4 and earlier it opens files in text
+mode, and even in Python 1.5 it still isn't good enough for the Macintosh: it
+doesn't copy the resource fork and Finder info.
+
+<<<
+''Note:'' This should be fixed for modern Python on [[Mac OS X]], but needs to
+be confirmed (especially due to the way the OS now stores metadata).
+<<<

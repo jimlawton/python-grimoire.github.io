@@ -1,0 +1,49 @@
+Some programming languages, such as the scripting language in MATLAB, allow
+calling a function and ignoring some of its return values. You need to do this
+in Python, ignoring some value returned from a function. 
+ 
+If the function returns a tuple, as done by most functions that return multiple
+results, treat the return value as a tuple and slice it to obtain the results
+that you need. 
+ 
+{{{
+def get_rgb_colour(colour_name):
+   # ... set R, G, B, to the values
+   return R, G, B
+
+# Get just the red component of a colour
+tup = get_rgb_colour('teal')
+R = tup[0]
+}}}
+ 
+This can be expressed more compactly, though less clearly, without a tuple
+variable as: 
+ 
+{{{
+R = get_rgb_colour('teal')[0]
+}}}
+ 
+Yet another solution is to use a dummy variable name for the variables that
+aren't of interest. {{{_}}} is suggested as a short and rarely used name for
+this purpose. 
+ 
+{{{
+R, _, _ = get_rgb_colour('methyl yellow')
+}}}
+ 
+For the sake of completeness, it should be mentioned that Perl supports an
+idiom for ignoring return values by assigning them to {{{undef}}}, the Perl
+counterpart of Python's {{{None}}}. (This idiom is rarely actually used in Perl
+programs.) Don't try the same thing in Python, which would be: 
+ 
+{{{
+   None, None, B = get_rgb_colour('da Vinci green')
+}}}
+ 
+This will run without errors, and {{{B}}} will get the expected value, but it
+also adds a new name to the local scope: {{{None}}} is now bound to some value.
+(Maybe that last sentence should end with a '!') Later uses of {{{None}}} in
+the same code will retrieve the assigned value, not the Python {{{None}}}
+object. In short, if you use the above idiom in Perl, don't attempt to use it
+in Python. 
+ 

@@ -1,0 +1,13 @@
+! Problem:
+
+You have a URL with hex-encoded characters like:
+{{{
+http://localhost/With%20Spaces.html
+}}}
+
+...and you want to decode the hex characters. [[PHP]] coders will immediately
+look for {{{urldecode()}}}, which does not exist in [[Python]].
+
+! Solution:
+
+Use {{{urllib.unquote()}}} or {{{urllib.unquote_plus()}}} instead.

@@ -1,0 +1,48 @@
+! Problem:
+
+You need a dictionary that can store the key and more than one value. For
+example, after {{{d[key] = value1}}} and {{{d[key] = value2}}}, you want
+{{{d[key]}}} to return a list containing {{{[value1, value2]}}}. This differs
+from an ordinary dictionary, where assigning to the same key twice causes the
+first value to be deleted and replaced by the second.
+
+! Solution:
+ 
+The following class stores lists of values; setting a new value causes it to be
+appended to the list. 
+ 
+{{{
+import UserDict
+class MultipleDict(UserDict.UserDict):
+   def __setitem__(self, key, item):
+if self.data.has_key( key ):
+    self.data[key].append( item )
+else:
+    self.data[key] = [item]
+}}}
+ 
+Using the class is simple: 
+ 
+{{{
+d = MultipleDict()
+d[1] = 'a'
+d[1] = 'b'
+d[1] = 'c'
+}}}
+ 
+{{{d[1]}}} will return {{{['a', 'b', 'c']}}}. To remove the key, you'll have to
+delete the entire list of values with {{{del d[1]}}}. 
+ 
+This class subclasses the {{{UserDict}}} class from the <<PythonModule
+UserDict>> module, which implements all the methods of dictionaries in a Python
+class, and stores its contents in the {{{data}}} attribute, which is a real
+dictionary. 
+
+To implement the desired change in behaviour, we only have to override the
+{{{____setitem____}}} method, and store the right result in {{{self.data}}}. 
+
+<<<
+''Note:'' Since Python 2.2, you can derive from the built-in types ("new style
+classes"), and {{{MultipleDict}}} would be best implemented as inheriting from
+{{{dict}}}.
+<<<

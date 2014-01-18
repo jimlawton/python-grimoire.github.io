@@ -1,0 +1,18 @@
+! Problem:
+
+You want to send cookies as part of an HTTP transaction
+
+! Solution:
+
+If you're using the <<PythonModule httplib>> module, you can add a Cookie
+header with the name/value pairs (mind the encoding if you're sending special
+characters - use the <<PythonModule cgi>> module for that):
+
+{{{
+import httplib
+conn = httplib.HTTPConnection( "localhost" )
+Headers = {"Cookie" : "Name=Value"}
+conn.request("GET", "/start", None, Headers )
+response = conn.getresponse()
+data = response.read()
+}}}

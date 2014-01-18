@@ -1,0 +1,33 @@
+! Problem:
+
+You want to have a function that returns more than one value as its result. For
+example, you may have a function that takes a colour name, and returns three
+numbers, the red, green, and blue values for that colour. 
+
+! Solution:
+
+The simplest and most common solution is to return a tuple containing the
+different values: 
+ 
+{{{
+def get_rgb_colour(colour_name):
+   # ... set R, G, B, to the values
+   return R, G, B
+}}}
+
+! Discussion:
+
+An alternative solution, using a class instance to hold return values, is
+useful if you want to return very many values, or differing numbers of values
+in different cases. You would set instance values of the class instance, and
+then return the instance to the caller. 
+
+{{{
+class RGBSetting: pass
+
+def get_rgb_colour(colour_name):
+   retval = RGBSetting()
+   # ... set retval.R, retval.G, retval.B, to the values
+   return retval
+}}}
+ 

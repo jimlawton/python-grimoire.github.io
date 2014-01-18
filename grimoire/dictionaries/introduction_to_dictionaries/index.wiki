@@ -1,0 +1,35 @@
+Dictionaries are associative data structures, storing key/value pairs. Given a
+key, the corresponding value can be retrieved. For example, the following
+dictionary maps English colour names to French ones. 
+ 
+{{{
+fr_colours = { 'red': 'rouge', 'blue': 'bleu',
+       'black': 'noir', 'white': 'blanc',
+       'yellow': 'jaune'}
+}}}
+ 
+To retrieve the value corresponding to a given key, the notation is the same as
+when retrieving an element from a list or tuple. When indexing an array, you
+can only For example, to get the French word for 'white', you would write
+{{{fr_colours['white']}}} in Python code. 
+ 
+A dictionary can use any immutable Python value as the key, and there are no
+restrictions on what you can store as values. That means that keys can be
+integers, floating point numbers, strings, or tuples; lists are the most
+important type that //can't// be used as keys. 
+ 
+Dictionaries are implemented as resizable hash tables. Hash tables are data
+structures optimized for quick retrieval; the result of a semi-random hash
+function is computed for each key, and the value is stored in a bin given by
+the hash function's result. Retrieving a key is then a matter of calculating
+the hash function and looking in the corresponding bin, so retrieval always
+takes the same amount of time no matter how large the dictionary is. (At least,
+this is true unless you have a pathological set of keys that all hash to the
+same value, or to a very small set of values. This is highly unlikely, unless
+you deliberately engineer your keys to beat the hash function.) 
+ 
+The hash table implementation of dictionaries explains the reason for the
+restriction to immutable keys. If the key were mutable like a list, it could be
+changed in-place which would also modify the hash value. The value would then
+no longer be stored in the right bin, and lookups would incorrectly fail. 
+ 

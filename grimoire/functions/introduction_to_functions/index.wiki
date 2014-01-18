@@ -1,0 +1,60 @@
+In Python, functions are defined using the {{{def}}} statement. The following
+example defines a function called {{{get_word()}}}. {{{get_word()}}} will take
+two parameters: a string sentence and a number N, and returns the N'th word of
+sentence. 
+ 
+{{{
+import string
+
+def get_word(sentence, N):
+   words = string.split(sentence)
+   return words[N]
+}}}
+ 
+The {{{return}}} statement, when followed by an expression, causes the value of
+the expression to be returned as the result of the function. In the above
+example, {{{words[N]}}} is returned as the result. 
+ 
+Python functions always produce a result, whether the code contains a
+{{{return}}} statement or not. If the path of execution falls off the end of
+the function, {{{None}}} is returned. A lone {{{return}}} statement, not
+followed by an expression, also returns None. 
+ 
+Default values for parameters can be specified by placing a "{{{=}}}" and an
+expression or a literal value after the parameter name. (For a discussion of
+using expressions to specify a default value, see the next section.) 
+ 
+In the following example, the function's filename parameter has no default
+value, the compresslevel argument has a default value of 9, and the fileobj
+parameter has a default value of {{{None}}}. 
+ 
+{{{
+def open_file(filename,
+             compresslevel = 9,
+             fileobj = None):
+   if fileobj is None:
+       fileobj = open(filename, 'w')
+   compressor = zlib.compressobj( compresslevel )
+}}}
+ 
+To call a function with keyword arguments that can be specified in any order,
+no special function definition is needed, though default arguments are often
+used in concert with keywords. The function call can simply give the names of
+function parameters, followed by an "{{{=}}}" and the desired value for the
+parameter. Given a function definition like {{{f(a, b = 'empty', c=3.5)}}}, the
+following function calls are all legal: 
+ 
+{{{
+f(1, 'new', 7.2)
+f(1, c=7.2)           # Equivalent to f(1, 'empty', 7.2)
+f(c=1, a=4, b='new')  # Equivalent to f(4, 'new', 1)
+}}}
+ 
+The following calls are all illegal: 
+ 
+{{{
+f(b = 'new')    # No value provided for a
+f(a = 4, 4)     # Non-keyword argument after keyword argument
+f(4, b=1, c=3, b=1) # duplicate keyword argument b
+}}}
+ 

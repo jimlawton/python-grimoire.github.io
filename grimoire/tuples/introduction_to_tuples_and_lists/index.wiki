@@ -1,0 +1,113 @@
+Python's lists and tuples are the simplest compound data types. They can
+contain any number of other Python objects, no matter what the type of the
+subobjects. One tuple or list can contain numbers, strings, other tuples and
+lists, class instances, or any other data type that Python can handle. 
+ 
+Tuple constants are written as a sequence of values separated by commas;
+optionally they can be surrounded by parentheses. A zero-length tuple is
+written as an empty pair of parentheses {{{()}}}, and a tuple of length 1 is
+indicicated by a trailing comma, to distinguish a one-element tuple from an
+expression.. 
+ 
+{{{
+1,2,3
+('subject', 'from', 'date', 'to')
+()        # Empty tuple
+(1,)      # Single-element tuple
+2,        # Another single-element tuple
+2         # The number 2 (no trailing ',')
+}}}
+ 
+Lists are always surrounded by square brackets: 
+ 
+{{{
+[]        # Empty list
+[1]       # List of length 1
+[1,2,3]   # List of length 3
+["this", 1, "is", "a", "list"]
+}}}
+ 
+You can retrieve the ith element in a list or tuple by indexing it: {{{a[i]}}}.
+Retrieving a single element is a fast operation, and is indepent of the size of
+the list/tuple or the value of i. A smaller list or tuple can be retrieved by
+slicing: {{{a[i:j]}}} returns a sublist or subtuple containing elements i up to
+j-1. 
+ 
+{{{
+>>> L = [0,1,2,3,4,5,6]
+>>> L[0:2], L[3:5], L[0:-1]
+([0, 1], [3, 4], [0, 1, 2, 3, 4, 5])
+}}}
+ 
+If an index is a negative number, then the length of the sequence is added to
+it. This means that {{{L[-1]}}} is the last element of the sequence {{{L}}},
+L[-2] is the next-to-last element, and so forth. You can mix positive and
+negative indexes as you like. Omitting i, the starting index of a slice, will
+default to 0, and omitting the ending index j defaults to the length of the
+sequence. 
+ 
+{{{
+>>> L[:2], L[-2:], L[:-1]
+([0, 1], [5, 6], [0, 1, 2, 3, 4, 5])
+}}}
+ 
+Tuples and lists are similar in many ways. The most important difference
+between them is that lists are mutable, or changeable objects; it's possible to
+replace any given list element, or to change the list's length. By way of
+contrast, once a tuple has been created it's not possible to change it in any
+way. 
+ 
+To modify a list, you can simply assign to an element or a slice, or use the
+{{{del}}} statement. 
+ 
+{{{
+>>> L=[1,2,3]
+>>> L[ -1 ] = 7 ; print L
+[1, 2, 7]
+>>> L[0:2] = ['a', 'b', 'c'] ; print L
+['a', 'b', 'c', 7]
+>>> del L[1] ; print L
+['a', 'c', 7]
+}}}
+ 
+Because tuples and lists are so similar, you might wonder why Python supports
+them both. Why not only have lists, since they're more flexible than tuples? 
+ 
+Immutable tuples are useful in situations where you need to pass a few items to
+a function and don't want the function to modify the tuple; for example, 
+ 
+{{{
+point1 = (120, 140)
+point2 = (200, 300)
+record(point1, point2)
+}}}
+ 
+You don't want to have to think about what would happen if the {{{record()}}}
+function changed the coordinates -- it can't, because tuples are immutable. In
+the section on dictionaries, you'll learn that tuples can be used as dictionary
+keys, while lists can't. 
+ 
+On the other hand, the mutability of lists makes it easier to change them, so
+they're useful when you're constructing a collection of objects over time, or
+when objects need to be freely removed and added. For example, if you're
+iterating through the lines of text in a file and saving lines that match a
+certain criterion such as a regular expression, a list is the natural data type
+for storing the matching lines. Adding a new line is fast -- just call the
+list's {{{append()}}} method -- while building a new tuple by concatentation
+({{{tuple1 + (line,)}}}) would be slow since it copies the entire tuple every
+time. 
+ 
+When to use a list or a tuple is ultimately a stylistic question, and you'll
+arrive at your own opinions about it. Personally, I generally use tuples to
+hold a collection of dissimilar data; for example, a function might return a
+numeric error code and a string describing an error as a tuple {{{(code,
+errmsg)}}}. In this style, tuples wind up being used like Cs structures or
+Pascal's records. A function that returned a number of similiar objects, such
+as lines from a text file, would return a list. In other words, while lists can
+contain data of different types, I tend to only use them to contain similar
+objects: all strings, all numbers, all instances of the same class, or
+whatever. (On the other hand, I don't follow this rigidly; if I had some
+different data types collected together and sometimes needed to change only one
+of them, I'd probably use a list instead of a tuple, even though the data in
+that list wouldn't be homogeneous.) 
+ 

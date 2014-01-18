@@ -1,0 +1,17 @@
+! Problem:
+
+You wish to display a random line from a file.
+
+! Solution:
+
+If you are dealing with a short file, you can produce a list containing all the
+lines, and then choose items at random:
+ 
+{{{
+lines = sys.stdin.readlines()
+# or file.readlines(), where file is a file object
+while lines:
+  line = random.choice(lines)
+  lines.remove(line)
+  print line,
+}}}

@@ -1,0 +1,21 @@
+The [[Conversion Script]] that [[I|Rui Carmo]] used to convert the original
+HTML version into TiddlyWiki format shows a possible way to emulate
+{{{switch}}} statements in Python using exceptions:
+
+{{{
+...
+    try:
+      raise intern(str(tag))
+    except ('tr', 'thead'):
+      self.buffer += '\n'
+    except ('th'):
+      self.buffer += '|!'
+    except ('blockquote'):
+      self.buffer += '\n<<<\n'
+    except:
+      pass
+}}}
+
+This is actually not a very good example, since the use of {{{intern}}} is
+likely to be deprecated soon. Nevertheless, right now it ensures that
+{{{except}}} will deal with the results of string conversion properly.

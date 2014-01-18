@@ -1,0 +1,16 @@
+The terminal has to be put into cbreak mode, in order to be able to read single
+characters from the terminal. 
+ 
+{{{
+import sys
+def getch():
+  import os, tty
+  fd = sys.stdin.fileno()
+  tty_mode = tty.tcgetattr(fd)
+  tty.setcbreak(fd)
+  try:
+    ch = os.read(fd, 1)
+  finally:
+    tty.tcsetattr(fd, tty.TCSAFLUSH, tty_mode)
+  return ch
+}}}

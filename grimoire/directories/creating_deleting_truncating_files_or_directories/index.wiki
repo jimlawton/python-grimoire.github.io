@@ -1,0 +1,21 @@
+To delete (remove, unlink) a file, use {{{os.remove(filename)}}} or
+{{{os.unlink(filename)}}} 
+ 
+For documentation, see the posix section of the library manual. They are the
+same: {{{unlink()}}} is simply the Unix name for this function. 
+ 
+To remove a directory  {{{os.rmdir()}}}
+ 
+To create a directory  {{{os.mkdir()}}}
+ 
+To rename a file  {{{os.rename()}}}
+ 
+To truncate a file, open it using{{{ f = open(filename, "r+")}}}, and use
+{{{f.truncate(offset)}}}
+ 
+(The offset defaults to the current seek position. The {{{ "r+"}}} mode opens
+the file for reading and writing.) 
+ 
+There's also {{{os.ftruncate(fd, offset)}}} for files opened with
+{{{os.open()}}}  for advanced Unix hacks only. 
+ 

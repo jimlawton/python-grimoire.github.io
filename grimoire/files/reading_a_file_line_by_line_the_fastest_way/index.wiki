@@ -1,0 +1,26 @@
+You can use the {{{sizehint}}} parameter to {{{readlines()}}} to get some of
+the efficiency of {{{readlines()}}} without reading in the whole file. The
+following code isn't optimized, but it shows the idea: 
+ 
+{{{
+class BufferedFileReader:
+  def __init__ (self, file):
+    self.file = file
+    self.lines = []
+    self.numlines = 0
+    self.index = 0
+
+def readline (self):
+  if (self.index >= self.numlines):
+    self.lines = self.file.readlines(65536)
+  self.numlines = len(self.lines)
+  self.index = 0
+
+  if (self.numlines == 0):
+    return ""
+
+  str = self.lines[self.index]
+  self.index = self.index + 1
+  return str
+}}}
+ 

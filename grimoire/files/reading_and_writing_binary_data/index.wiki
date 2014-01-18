@@ -1,0 +1,20 @@
+Use the struct module. It allows you to take a string read from a file
+containing binary data (usually numbers) and convert it to Python objects; and
+vice versa. 
+ 
+For example, the following code reads two 4-byte integers in big-endian format
+from a file: 
+ 
+{{{
+  import struct
+ f = open(filename, "rb")  # Open in binary mode for portability
+ s = f.read(8)
+ x, y = struct.unpack(">ll", s)
+}}}
+ 
+The '>' in the format string forces big-endian data; each letter 'l' reads one
+"long integer" (4 bytes) from the string. 
+ 
+You can refer to the Library Reference for more details about the struct
+module. 
+ 

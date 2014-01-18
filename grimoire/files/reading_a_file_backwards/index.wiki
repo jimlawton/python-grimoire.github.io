@@ -1,0 +1,21 @@
+! Problem:
+
+You want to process a file, but starting with the last lines first.
+
+! Partial Solution:
+
+If you can read the entire file into memory, you can simply read all the data
+into a list and then reverse the list:
+ 
+{{{
+L = open('myFile').readlines()
+L.reverse()
+}}}
+ 
+On a character-by-character basis, a similarly memory-bound solution is: 
+ 
+{{{
+import string
+L = string.split(open('thefile', 'r').read(), '')
+L.reverse()
+}}}

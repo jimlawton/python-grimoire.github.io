@@ -1,0 +1,34 @@
+! Problem:
+
+When a file will be accessed and modified by several programs at the same time,
+you need to ensure that the programs can't make conflicting changes at the same
+time, which can result in the file being corrupted. 
+
+! Solution:
+
+This is accomplished by locking the file. 
+ 
+The <<PythonModule posixfile>> module provides an object that acts like
+Python's standard file objects, but adds some extra methods. One of the extra
+methods is {{{lock(mode, len, start, whence)}}}. mode is a string specifying
+whether you want a read or write lock, or to give up an already-acquired lock. 
+ 
+For example, to gain a write lock for the entire file: 
+ 
+{{{
+file.lock('w')
+}}}
+
+! Discussion:
+
+Locks can be for reading or writing. Multiple read locks can be held by
+different processes, because several processes can read the same data at the
+same time without harm. Only a single write lock can be held at a given time,
+and read locks won't be granted while a write lock is being held. 
+ 
+When requesting a lock, the default is to lock the entire file. It's also
+possible to lock a part of the file, by specifying the start and length of a
+region in the file. This allows multiple processes to modify different parts of
+a file at the same time. Consult <<PythonModule posixfile>> for more
+information. 
+

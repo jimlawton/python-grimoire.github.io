@@ -1,0 +1,16 @@
+! Problem:
+
+You have a text buffer containing [[HTML]] character entities and need to
+render them in [[Unicode]] text, replacing each entity with a single symbol.
+
+! Solution:
+
+Use [[BeautifulSoup|http://www.crummy.com/software/BeautifulSoup/]], which can
+do all the dirty work for you in a one-liner:
+
+{{{
+from BeautifulSoup import *
+
+symbols = unicode(BeautifulStoneSoup(buffer,
+convertEntities=BeautifulStoneSoup.HTML_ENTITIES))
+}}}

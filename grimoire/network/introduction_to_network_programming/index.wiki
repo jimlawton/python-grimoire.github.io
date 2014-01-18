@@ -1,0 +1,15 @@
+The rise of the Internet has greatly eased the life of network programmers, by
+reducing the importance of proprietary standards and replacing them with open
+protocols whose specifications are readily available. Various standard Internet
+protocols, such as the Simple Mail Transport Protocol ([[SMTP]]) for electronic
+mail, or the Web's HyperText Transfer Protocol ([[HTTP]]), now dominate their
+respective niches. 
+
+Python's standard library includes many modules that implement different
+Internet protocols, and some frameworks (like [[Twisted]]) take those
+implementations beyond the basics, allowing you to code just about any sort of
+client (or server) imaginable.
+
+The basics, however, are well represented in the standard library, mostly in
+the form of classes like <<PythonModule SocketServer>> and <<PythonModule
+SimpleHTTPServer>>.

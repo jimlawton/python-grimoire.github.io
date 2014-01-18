@@ -1,0 +1,27 @@
+! Problem:
+
+You want to do an XML-RPC ping, such as the one required by
+[[Technorati|http://technorati.com]] or other blog tracking services.
+
+! Solution:
+
+Here's a function that uses the <<PythonModule xmlrpclib>> module:
+
+{{{
+import xmlrpclib
+
+def doPings(siteinfo):
+  try:
+    for target in siteinfo['ping']:
+      if target == 'technorati':
+        print "Pinging Technorati..."
+        server = xmlrpclib.Server('http://rpc.technorati.com/rpc/ping')
+        print server.weblogUpdates.ping(siteinfo['sitetitle'],
+siteinfo['ping'][target])
+  except:
+    pass
+}}}
+
+
+Feel free to expand the exception handler to deal with any errors that may
+occur.

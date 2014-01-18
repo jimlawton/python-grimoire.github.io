@@ -1,0 +1,54 @@
+! Problem:
+
+You wish to check whether a given key is stored in a dictionary. For example,
+you wish to know if the key {{{'green'}}} is in the {{{fr_colours}}}
+dictionary.
+
+! Solution:
+
+There are two ways of doing this. The {{{has_key()}}} dictionary method returns
+true or false depending on whether the key is in the dictionary or not. 
+ 
+{{{
+>>> fr_colours.has_key('blue')
+1
+>>> fr_colours.has_key('purple')
+0
+}}}
+ 
+If a dictionary retrieval fails, Python raises a {{{KeyError}}} exception. You
+can catch this exception and do something appropriate in the exception handler.
+ 
+{{{
+try:
+   fcolr = fr_colours[ ecolr ]
+except KeyError:
+   fcolr = "<Untranslated colour %s>" % (ecolr,)
+}}}
+ 
+! Discussion:
+ 
+Deciding whether to use {{{has_key()}}} or catch the exception is a question of
+both style and speed. Either way is fine from a stylistic point of view, though
+you may have a preference for one or the other, depending on what your
+programming background is. For example, one of the authors rarely catched the
+{{{KeyError}}} exception, preferring to write {{{if dict.has_key(key): ...}}}
+before a block of code which can then assume that key is present. You can do
+whatever you like.
+
+The comparative speed of the two solutions depends on how often you expect the
+key to be present. Raising an exception and then catching it is slower than a
+call to the {{{has_key()}}} method. Consider a program where you're looping
+over 100,000 keys, and doing something different depending on whether the key
+is present or not. If you expect only a few keys to be missing, the exception
+will almost never be raised, while calling the {{{has_key()}}} method would
+cost a little bit of time on every pass through the loop. In this case,
+catching the infrequent exceptions will be faster.
+
+On the other hand, if 50,000 or 90,000 of the keys won't be present, the
+overhead of raising exceptions and catching them will be larger because an
+exception will have to be raised more often, so checking the result of
+{{{has_key()}}} is probably a better idea. The exact crossover point will vary
+a bit; in [[a presentation|http://barry.warsaw.us/papers/ecshort.pdf]]
+([[PDF]]) at the sixth Python conference, Barry Warsaw found it to be around 5
+or 10 percent.

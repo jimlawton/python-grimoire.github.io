@@ -1,0 +1,70 @@
+You want to retrieve a file through HTTP. The data returned might be the HTML
+text of a Web page, an image such as a GIF or JPEG, or a binary file such as a
+JAR or TGZ file. 
+ 
+The easiest course is to use the {{{urllib}}} module, which will try to open an
+arbitrary URL and return a file object which can be read from to retrieve the
+data. 
+ 
+{{{
+import urllib
+
+# Open the URL
+input = urllib.urlopen('http://www.example.com/info/index.html')
+
+# Read all the data from the file as a single string
+data = input.read()
+input.close()
+}}}
+ 
+An alternative solution that operates at a lower level is to use the
+{{{httplib}}} module to perform the HTTP transaction yourself. 
+  
+{{{
+import httplib
+h = httplib.HTTP('www.example.com')
+h.putrequest('GET', '/info/index.html')
+h.putheader('Accept', 'text/html')
+h.endheaders()
+errcode, errmsg, headers = h.getreply()
+if errcode == 200:
+   f = h.getfile()
+   data = f.read() # Print the raw HTML
+}}}
+ 
+Some pages require a user name and password; Web browsers will prompt you for
+them when required. The {{{urlopen()}}} function will prompt the user and
+request the user name and password on standard input. Such user intervention is
+unsuitable for fully automatic Web page retrievals, so you should specify the
+user name and password when retrieving such a password-protected page
+automatically. The user name and password can be specified in the URL, when
+it's written in the form {{{http://user:password@host/...}}}. 
+ 
+Fredrik Lundh suggests an alternative approach that's more flexible, but is
+also more complicated. The {{{urllib}}} module contains several classes for
+opening URLs using different protocols, one such class being
+{{{FancyURLopener}}}. The {{{urlopen()}}} function simply creates an instance
+of {{{FancyURLopener}}} and uses it to access URLs. When input from the user is
+required, the {{{prompt_user_passwd()}}} method is called. Fredrik suggests the
+following approach: subclass {{{FancyURLopener}}} and add attributes to hold
+the username and password. {{{prompt_user_passwd()}}} is then overridden to
+simply return the user name and password without user intervention. 
+ 
+{{{
+import urllib
+
+class myURLOpener(urllib.FancyURLopener):
+   def setpasswd(self, user, passwd):
+       self.__user = user
+       self.__passwd = passwd
+
+   def prompt_user_passwd(self, host, realm):
+       return self.__user, self.__passwd
+
+urlopener = myURLOpener()
+urlopener.setpasswd("mulder", "trustno1")
+
+fp = urlopener.open("http://www.secretlabs.com")
+print fp.read()
+}}}
+ 

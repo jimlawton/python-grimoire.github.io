@@ -1,0 +1,39 @@
+! Problem:
+
+You want to process not merely a single directory, but an entire hierarchy of
+files and folders, and perhaps find a specific set of files.
+
+! Solution:
+
+Import the <<PythonModule os>> module, and use {{{os.path.walk(path, function,
+arg)}}}. That recursively walks through the tree rooted at {{{path}}}, and
+calls {{{function()}}} in each directory that's visited.
+
+{{{function()}}} must accept 3 arguments: ({{{arg}}}, {{{dirname}}},
+{{{name_list}}}). {{{arg}}} is the same as the value passed to
+{{{os.path.walk}}}; {{{dirname}}} is the current directory name;
+{{{name_list}}} is a list of the names of the directories and filenames in the
+directory. You can modify {{{name_list}}} in place to avoid traversing certain
+subdirectories. 
+
+Here's a simple program to find files: 
+
+{{{
+import os, sys
+
+def find(arg, dirname, names):
+  if arg in names:
+    print os.path.join(dirname, arg)
+
+os.path.walk(sys.argv[1], find, sys.argv[2])
+}}}
+
+Sample usage: 
+ 
+{{{
+$ python ~/t.py /tmp/ README
+/tmp/xml-0.4/README
+/tmp/xml-0.4/demo/README
+/tmp/xml-0.4/dom/README
+}}}
+ 

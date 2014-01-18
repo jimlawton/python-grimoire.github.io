@@ -1,0 +1,61 @@
+! Problem:
+
+You want to read a file that's been compressed with the GNU {{{gzip}}} program,
+or want to write a compressed file that {{{gzip}}} can read.
+
+! Solution:
+ 
+The <<PythonModule gzip>> module provides a {{{GzipFile}}} class for reading
+and writing {{{gzip}}}'ped files. {{{GzipFile}}} instances imitate the methods
+of Python's standard file objects. To read a file: 
+ 
+{{{
+import gzip
+
+# Open the file in 'r' mode for reading
+file = GzipFile('data.gz', 'r')
+line = file.readline()          # Read a single line
+data = file.read(1024) # Read 1K of data
+file.close()
+}}}
+ 
+Writing compressed data is much the same: 
+ 
+{{{
+import gzip
+
+# Open the file in 'w' mode for writing
+file = GzipFile('output.gz', 'w')
+file.write( 'First line of output\n')
+file.close()
+}}}
+
+! Discussion:
+
+It's legal to use the {{{'a'}}} mode to append data to a compressed file; the
+{{{gzip}}} file format can handle a file with several chunks of compressed
+data. When reading such a file with {{{GzipFile}}}, you won't be able to tell
+where one chunk leaves off and the next begins because {{{GzipFile}}}
+seamlessly handles the transition between them. 
+ 
+The <<PythonModule gzip>> module is built on top of the <<PythonModule zlib>>
+module, which compresses strings of data. The <<PythonModule zlib>> module can
+be useful on its own to save disk space or network bandwidth. 
+
+For example, you can compress data before sending it over a TCP/IP socket or
+storing it in a DBM file. Here's a short example:
+ 
+{{{
+>>> import zlib
+>>> s = "This is a test of the emergency broadcast chicken."
+>>> comp = zlib.compress(s)
+>>> comp
+'x\234\013\311\310,V\000...'
+>>> print zlib.decompress( comp )
+This is a test of the emergency broadcast chicken.
+}}}
+ 
+The <<PythonModule zlib>> module also provides compressor and decompressor
+objects that can be used to compress large amounts of data without having to
+squeeze all of it into memory.
+  
